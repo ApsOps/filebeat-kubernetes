@@ -1,0 +1,15 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - "/var/log/containers/*.log"
+      document_type: kube-logs
+
+output:
+  logstash:
+    hosts: [${LOGSTASH_HOSTS:'logstash:5043'}]
+    timeout: 15
+
+logging:
+  level: ${LOG_LEVEL:error}
+
