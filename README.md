@@ -38,12 +38,17 @@ spec:
     volumeMounts:
     - name: varlog
       mountPath: /var/log/containers
+    - name: varlibdockercontainers
+      mountPath: /var/lib/docker/containers
       readOnly: true
   terminationGracePeriodSeconds: 30
   volumes:
   - name: varlog
     hostPath:
       path: /var/log/containers
+  - name: varlibdockercontainers
+    hostPath:
+      path: /var/lib/docker/containers
 ```
 
 Make sure you add a filter in your logstash configuration if you want to process the actual log lines.
