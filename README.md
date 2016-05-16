@@ -56,15 +56,19 @@ Make sure you add a filter in your logstash configuration if you want to process
 ```
 filter {
   if [type] == "kube-logs" {
+    json {
+      source => "message"
+    }
+
     mutate {
       rename => ["log", "message"]
     }
-  }
 
     date {
       match => ["time", "ISO8601"]
       remove_field => ["time"]
     }
+  }
 }
 ```
 
