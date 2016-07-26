@@ -7,48 +7,52 @@ You can provide following environment variables to customize it.
 
 ```
 LOGSTASH_HOSTS="'example.com:4083','example.com:4084'"
-LOG_LEVEL=info
+LOG_LEVEL=info  # log level for filebeat. Defaults to "error".
 ```
 
-You should run a Kubernetes pod on every node. Example pod manifest:
+You should be run as a Kubernetes Daemonset (a pod on every node). Example manifest:
 
 ```
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Daemonset
 metadata:
   name: filebeat
   namespace: kube-system
   labels:
-    k8s-app: filebeat
+    app: filebeat
 spec:
-  containers:
-  - name: filebeat
-    image: apsops/filebeat-kubernetes:v0.1
-    resources:
-      limits:
-        memory: 200Mi
-      requests:
-        cpu: 100m
-        memory: 200Mi
-    env:
-      - name: LOGSTASH_HOSTS
-        value: "'myhost.com:5000'"
-      - name: LOG_LEVEL
-        value: info
-    volumeMounts:
-    - name: varlog
-      mountPath: /var/log/containers
-    - name: varlibdockercontainers
-      mountPath: /var/lib/docker/containers
-      readOnly: true
-  terminationGracePeriodSeconds: 30
-  volumes:
-  - name: varlog
-    hostPath:
-      path: /var/log/containers
-  - name: varlibdockercontainers
-    hostPath:
-      path: /var/lib/docker/containers
+  template:
+    metadata:
+      labels:
+        app: filebeat
+      name: filebeat
+    spec:
+      containers:
+      - name: filebeat
+        image: apsops/filebeat-kubernetes:v0.2
+        resources:
+          limits:
+            limits: 50m
+            memory: 50Mi
+        env:
+          - name: LOGSTASH_HOSTS
+            value: "'myhost.com:5000'"
+          - name: LOG_LEVEL
+            value: info
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log/containers
+        - name: varlibdockercontainers
+          mountPath: /var/lib/docker/containers
+          readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log/containers
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
 ```
 
 Make sure you add a filter in your logstash configuration if you want to process the actual log lines.
@@ -68,9 +72,16 @@ filter {
       match => ["time", "ISO8601"]
       remove_field => ["time"]
     }
+
+    grok {
+        match => { "source" => "/var/log/containers/%{DATA:pod_name}_%{DATA:namespace}_%{GREEDYDATA:container_name}-%{DATA:container_id}.log" }
+        remove_field => ["source"]
+    }
   }
 }
 ```
+
+This grok pattern would add the fields - `pod_name`, `namespace`, `container_name` and `container id` to log entry in Elasticsearch.
 
 ## Contributing
 I plan to make this more modular and reliable.
