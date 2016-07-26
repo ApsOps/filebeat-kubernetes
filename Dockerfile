@@ -2,7 +2,7 @@ FROM ubuntu
 
 MAINTAINER Amanpreet Singh <aps.sids@gmail.com>
 
-ENV FILEBEAT_VERSION 1.2.2
+ENV FILEBEAT_VERSION 1.2.3
 
 RUN apt-get update && \
     apt-get -y install wget && \
@@ -18,4 +18,3 @@ RUN apt-get update && \
 COPY filebeat.yml /etc/filebeat/
 
 CMD ["/usr/local/bin/filebeat", "-e", "-c", "/etc/filebeat/filebeat.yml"]
-
