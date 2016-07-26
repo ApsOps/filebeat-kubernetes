@@ -14,7 +14,7 @@ You should be run as a Kubernetes Daemonset (a pod on every node). Example manif
 
 ```
 apiVersion: extensions/v1beta1
-kind: Daemonset
+kind: DaemonSet
 metadata:
   name: filebeat
   namespace: kube-system
@@ -32,7 +32,7 @@ spec:
         image: apsops/filebeat-kubernetes:v0.2
         resources:
           limits:
-            limits: 50m
+            cpu: 50m
             memory: 50Mi
         env:
           - name: LOGSTASH_HOSTS
