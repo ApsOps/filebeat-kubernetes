@@ -5,14 +5,14 @@ Filebeat container, alternative to fluentd used to ship kubernetes cluster and p
 This container is designed to be run in a pod in Kubernetes to ship logs to logstash for further processing.
 You can provide following environment variables to customize it.
 
-```
+```bash
 LOGSTASH_HOSTS="'example.com:4083','example.com:4084'"
 LOG_LEVEL=info  # log level for filebeat. Defaults to "error".
 ```
 
-You should be run as a Kubernetes Daemonset (a pod on every node). Example manifest:
+This should be run as a Kubernetes Daemonset (a pod on every node). Example manifest:
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -57,7 +57,7 @@ spec:
 
 Make sure you add a filter in your logstash configuration if you want to process the actual log lines.
 
-```
+```ruby
 filter {
   if [type] == "kube-logs" {
     json {
