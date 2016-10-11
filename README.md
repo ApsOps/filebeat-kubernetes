@@ -1,4 +1,7 @@
 # filebeat-kubernetes
+
+[![](https://images.microbadger.com/badges/image/apsops/filebeat-kubernetes.svg)](https://microbadger.com/images/apsops/filebeat-kubernetes "")
+
 Filebeat container, alternative to fluentd used to ship kubernetes cluster and pod logs
 
 ## Getting Started
