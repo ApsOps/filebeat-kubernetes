@@ -1,15 +1,17 @@
-filebeat:
-  prospectors:
-    -
-      paths:
-        - "/var/log/containers/*.log"
-      document_type: kube-logs
+filebeat.prospectors:
+-
+  paths:
+    - "/var/log/containers/*.log"
+  json.message_key: log
+  json.keys_under_root: true
+  json.add_error_key: true
+  multiline.pattern: '^\s'
+  multiline.match: after
+  document_type: kube-logs
 
-output:
-  logstash:
-    hosts: [${LOGSTASH_HOSTS:'logstash:5043'}]
+output.logstash:
+    hosts: '${LOGSTASH_HOSTS:?No logstash host configured. Use env var LOGSTASH_HOSTS to set hosts.}'
     timeout: 15
 
-logging:
-  level: ${LOG_LEVEL:error}
+logging.level: ${LOG_LEVEL:error}
 
