@@ -1,3 +1,5 @@
+filebeat.registry_file: /var/log/containers/filebeat_registry
+
 filebeat.prospectors:
 -
   paths:
