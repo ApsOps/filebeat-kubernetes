@@ -2,7 +2,7 @@ FROM ubuntu
 
 MAINTAINER Amanpreet Singh <aps.sids@gmail.com>
 
-ENV FILEBEAT_VERSION 5.1.1
+ENV FILEBEAT_VERSION 5.2.0
 
 RUN apt-get update && \
     apt-get -y install wget && \
