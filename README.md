@@ -9,7 +9,7 @@ This container is designed to be run in a pod in Kubernetes to ship logs to logs
 You can provide following environment variables to customize it.
 
 ```bash
-LOGSTASH_HOSTS="'example.com:4083','example.com:4084'"
+LOGSTASH_HOSTS=example.com:4083,example.com:4084
 LOG_LEVEL=info  # log level for filebeat. Defaults to "error".
 ```
 
@@ -32,14 +32,14 @@ spec:
     spec:
       containers:
       - name: filebeat
-        image: apsops/filebeat-kubernetes:v0.2
+        image: apsops/filebeat-kubernetes:v0.3
         resources:
           limits:
             cpu: 50m
             memory: 50Mi
         env:
           - name: LOGSTASH_HOSTS
-            value: "'myhost.com:5000'"
+            value: myhost.com:5000
           - name: LOG_LEVEL
             value: info
         volumeMounts:
@@ -58,14 +58,13 @@ spec:
           path: /var/lib/docker/containers
 ```
 
+Filebeat parses docker json logs and applies multiline filter on the node before pushing logs to logstash.
+
 Make sure you add a filter in your logstash configuration if you want to process the actual log lines.
 
 ```ruby
 filter {
   if [type] == "kube-logs" {
-    json {
-      source => "message"
-    }
 
     mutate {
       rename => ["log", "message"]
