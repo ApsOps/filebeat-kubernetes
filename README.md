@@ -11,6 +11,7 @@ You can provide following environment variables to customize it.
 ```bash
 LOGSTASH_HOSTS=example.com:4083,example.com:4084
 LOG_LEVEL=info  # log level for filebeat. Defaults to "error".
+FILEBEAT_HOST=ip-a-b-c-d # custom "host" field. Refer following manifest to set it to k8s nodeName
 ```
 
 This should be run as a Kubernetes Daemonset (a pod on every node). Example manifest:
@@ -42,6 +43,10 @@ spec:
             value: myhost.com:5000
           - name: LOG_LEVEL
             value: info
+          - name: FILEBEAT_HOST
+            valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
         volumeMounts:
         - name: varlog
           mountPath: /var/log/containers

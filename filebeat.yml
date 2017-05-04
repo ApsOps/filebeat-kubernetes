@@ -11,6 +11,9 @@ filebeat.prospectors:
   multiline.pattern: '^\s'
   multiline.match: after
   document_type: kube-logs
+  fields:
+    host: ${FILEBEAT_HOST:${HOSTNAME}}
+  fields_under_root: true
 
 output.logstash:
     hosts: ${LOGSTASH_HOSTS:?No logstash host configured. Use env var LOGSTASH_HOSTS to set hosts.}
