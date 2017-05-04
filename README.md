@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: filebeat
-        image: apsops/filebeat-kubernetes:v0.3
+        image: apsops/filebeat-kubernetes:v0.4
         resources:
           limits:
             cpu: 50m
