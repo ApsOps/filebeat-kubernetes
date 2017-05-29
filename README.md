@@ -50,6 +50,9 @@ spec:
         volumeMounts:
         - name: varlog
           mountPath: /var/log/containers
+        - name: varlogpods
+          mountPath: /var/log/pods
+          readOnly: true
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
@@ -58,6 +61,9 @@ spec:
       - name: varlog
         hostPath:
           path: /var/log/containers
+      - name: varlogpods
+        hostPath:
+          path: /var/log/pods
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
