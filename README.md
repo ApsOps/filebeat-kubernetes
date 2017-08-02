@@ -1,5 +1,6 @@
 # filebeat-kubernetes
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/apsops/filebeat-kubernetes.svg)](https://hub.docker.com/r/apsops/filebeat-kubernetes/)
 [![](https://images.microbadger.com/badges/image/apsops/filebeat-kubernetes.svg)](https://microbadger.com/images/apsops/filebeat-kubernetes "")
 
 Filebeat container, alternative to fluentd used to ship kubernetes cluster and pod logs
