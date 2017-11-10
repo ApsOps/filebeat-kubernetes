@@ -13,6 +13,7 @@ filebeat.prospectors:
   document_type: kube-logs
   fields:
     host: ${FILEBEAT_HOST:${HOSTNAME}}
+    cluster_name: ${CLUSTER_NAME:default}
   fields_under_root: true
 
 output.logstash:

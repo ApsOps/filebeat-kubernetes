@@ -46,6 +46,8 @@ spec:
             value: myhost.com:5000
           - name: LOG_LEVEL
             value: info
+          - name: CLUSTER_NAME
+            value: my_cluster
           - name: FILEBEAT_HOST
             valueFrom:
                 fieldRef:
