@@ -13,6 +13,7 @@ You can provide following environment variables to customize it.
 LOGSTASH_HOSTS=example.com:4083,example.com:4084
 LOG_LEVEL=info  # log level for filebeat. Defaults to "error".
 FILEBEAT_HOST=ip-a-b-c-d # custom "host" field. Refer following manifest to set it to k8s nodeName
+CLUSTER_NAME=my_cluster # Kubernetes cluster name to identity if you have multiple clusters. Default value is "default".
 ```
 
 The endpoints listed by `LOGSTASH_HOSTS` should be listening with the [Beats input plugin](https://www.elastic.co/guide/en/logstash/5.6/plugins-inputs-beats.html).
