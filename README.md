@@ -18,7 +18,11 @@ CLUSTER_NAME=my_cluster # Kubernetes cluster name to identity if you have multip
 
 The endpoints listed by `LOGSTASH_HOSTS` should be listening with the [Beats input plugin](https://www.elastic.co/guide/en/logstash/5.6/plugins-inputs-beats.html).
 
-This should be run as a Kubernetes Daemonset (a pod on every node). Example manifest:
+This should be run as a Kubernetes Daemonset (a pod on every node).
+
+The `updateStrategy` will determine how to apply imperative changes, [See K8s docs](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#step-3-updating-a-daemonset-template).
+
+Example manifest:
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -29,6 +33,8 @@ metadata:
   labels:
     app: filebeat
 spec:
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
